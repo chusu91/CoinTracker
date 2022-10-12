@@ -7,6 +7,7 @@ import {
   Routes,
   useLocation,
   useMatch,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
@@ -33,6 +34,20 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
+const Button = styled.button`
+  position: fixed;
+  top: 20px;
+  left: 30em;
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  font-weight: 500;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: ${(props) => props.theme.accentColor};
+  cursor: pointer;
+`;
 const Loader = styled.span`
   text-align: center;
   display: block;
@@ -159,6 +174,7 @@ function Coin() {
   const { state } = useLocation() as Location;
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
+  const navigate = useNavigate();
   // 쿼리쓸때, 쿼리에서 제공하는 로딩값 변수이름 중복되지 않게 바꾸어서 설정
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
@@ -196,6 +212,7 @@ function Coin() {
         </title>
       </Helmet>
       <Header>
+        <Button onClick={() => navigate(-1)}>Home</Button>
         <Title>
           {state?.name ? state.name : loading ? "loading..." : infoData?.name}
           {/* state에 name이 있다면, state.name 출력 or loading 트루라면 로딩...출력, 아니면 인포의 네임 출력  */}
