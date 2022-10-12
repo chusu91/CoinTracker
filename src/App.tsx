@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { HelmetProvider } from "react-helmet-async";
 
 //global style setting. added font and colors from default theme as well
 const GlobalStyle = createGlobalStyle`
@@ -71,8 +72,10 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <HelmetProvider>
+        <Router />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </HelmetProvider>
     </>
   );
 }
