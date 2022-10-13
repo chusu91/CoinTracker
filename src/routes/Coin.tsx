@@ -35,9 +35,8 @@ const Title = styled.h1`
 `;
 
 const Button = styled.button`
-  position: fixed;
   top: 20px;
-  left: 30em;
+  right: 10em;
   width: 50px;
   height: 30px;
   text-align: center;
@@ -187,6 +186,9 @@ function Coin() {
       refetchInterval: 5000, //5초마다 데이터 fetch
     }
   );
+  const currentPrice = Number(
+    tickersData?.quotes.USD.price.toFixed(3)
+  ) as number;
   // const [loading, setLoading] = useState(true);
   // const [info, setInfo] = useState<InfoData>();
   // const [priceInfo, setPriceInfo] = useState<PriceData>();
@@ -211,8 +213,8 @@ function Coin() {
           {state?.name ? state.name : loading ? "loading..." : infoData?.name}
         </title>
       </Helmet>
+      <Button onClick={() => navigate("/")}>Home</Button>
       <Header>
-        <Button onClick={() => navigate(-1)}>Home</Button>
         <Title>
           {state?.name ? state.name : loading ? "loading..." : infoData?.name}
           {/* state에 name이 있다면, state.name 출력 or loading 트루라면 로딩...출력, 아니면 인포의 네임 출력  */}
@@ -231,7 +233,7 @@ function Coin() {
         </OverviewItem>
         <OverviewItem>
           <span>Price:</span>
-          <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
+          <span>${currentPrice}</span>
         </OverviewItem>
       </Overview>
       <Description>{infoData?.description}</Description>
@@ -256,7 +258,10 @@ function Coin() {
       </Tabs>
 
       <Routes>
-        <Route path="price" element={<Price />}></Route>
+        <Route
+          path="price"
+          element={<Price currentPrice={currentPrice} />}
+        ></Route>
         <Route path="chart" element={<Chart />}></Route>
       </Routes>
     </Container>
