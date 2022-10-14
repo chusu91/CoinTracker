@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { redirect, useParams } from "react-router-dom";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import CandleChart from "react-apexcharts";
 
 interface IHistoricalData {
   time_open: number;
@@ -19,6 +20,14 @@ function Chart() {
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId)
   );
+  const chartData = data?.map((price) => {
+    return {
+      x: new Date(price.time_close * 1000).toLocaleDateString(),
+      y: [price.open, price.high, price.low, price.close].map((str) => {
+        return Number(str);
+      }),
+    };
+  });
 
   return (
     <div>
@@ -65,6 +74,39 @@ function Chart() {
                 formatter: (value) => `$ ${value.toFixed(3)}`,
               },
             },
+          }}
+        />
+      )}
+      {isLoading ? (
+        "Loading chart..."
+      ) : (
+        <CandleChart
+          type="candlestick"
+          series={[
+            {
+              data: chartData,
+            },
+          ]}
+          options={{
+            theme: { mode: "dark" },
+            chart: {
+              height: 500,
+              width: 500,
+              toolbar: { show: false },
+              background: "transparant",
+            },
+
+            // plotOptions: {
+            //   candlestick: {
+            //     colors: {
+            //       upward: "red",
+            //       downward: "blue",
+            //     },
+            //     wick: {
+            //       useFillColor: true,
+            //     },
+            //   },
+            // },
           }}
         />
       )}
