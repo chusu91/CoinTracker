@@ -109,9 +109,7 @@ interface Location {
   };
 }
 
-interface ICoinProps {
-  isDark: boolean;
-}
+interface ICoinProps {}
 
 // IInfoData 이렇게 선언가능. 이러면 인터페이스인 거 손쉽게 예측가능
 interface InfoData {
@@ -172,7 +170,7 @@ interface PriceData {
   };
 }
 
-function Coin({ isDark }: ICoinProps) {
+function Coin({}: ICoinProps) {
   const { coinId } = useParams<{ coinId: string }>();
   const { state } = useLocation() as Location;
   const priceMatch = useMatch("/:coinId/price");
@@ -266,7 +264,7 @@ function Coin({ isDark }: ICoinProps) {
           path="price"
           element={<Price currentPrice={currentPrice} />}
         ></Route>
-        <Route path="chart" element={<Chart isDark={isDark} />}></Route>
+        <Route path="chart" element={<Chart />}></Route>
       </Routes>
     </Container>
   );

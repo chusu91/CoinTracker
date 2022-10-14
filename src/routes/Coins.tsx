@@ -2,8 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -67,11 +69,11 @@ interface ICoin {
   type: string;
 }
 
-interface ICoinProps {
-  toggleDark: () => void;
-}
+interface ICoinProps {}
 
-function Coins({ toggleDark }: ICoinProps) {
+function Coins({}: ICoinProps) {
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   //this hook requires two arguments, (["unique identityfiyer for query"], fetch function)
   // isLoading is included in the hook
   // fetchCoins function is done, save it to the data.
@@ -95,7 +97,7 @@ function Coins({ toggleDark }: ICoinProps) {
       </Helmet>
       <Header>
         <Title>Coins</Title>
-        <button onClick={toggleDark}>Toggle Mode</button>
+        <button onClick={toggleDarkAtom}>Toggle Mode</button>
       </Header>
 
       {isLoading ? (

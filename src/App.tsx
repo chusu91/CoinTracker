@@ -5,6 +5,8 @@ import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 
 //global style setting. added font and colors from default theme as well
 const GlobalStyle = createGlobalStyle`
@@ -72,14 +74,13 @@ a {
 `;
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => setIsDark((current) => !current);
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
         <HelmetProvider>
-          <Router isDark={isDark} toggleDark={toggleDark} />
+          <Router />
           <ReactQueryDevtools initialIsOpen={true} />
         </HelmetProvider>
       </ThemeProvider>
