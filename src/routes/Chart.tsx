@@ -14,7 +14,11 @@ interface IHistoricalData {
   volume: string;
   market_cap: number;
 }
-function Chart() {
+
+interface IChartProps {
+  isDark: boolean;
+}
+function Chart({ isDark }: IChartProps) {
   const { coinId } = useParams<"coinId">();
   const { isLoading, data } = useQuery<IHistoricalData[]>(
     ["ohlcv", coinId],
@@ -45,7 +49,7 @@ function Chart() {
             //저 데이터는 number 배열이다! 라고강제 하는겁니다..
           ]}
           options={{
-            theme: { mode: "dark" },
+            theme: { mode: isDark ? "dark" : "light" },
             chart: {
               height: 500,
               width: 500,
@@ -84,7 +88,7 @@ function Chart() {
           type="candlestick"
           series={[
             {
-              data: chartData,
+              data: chartData!,
             },
           ]}
           options={{

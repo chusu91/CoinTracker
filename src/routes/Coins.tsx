@@ -20,10 +20,11 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.cardBgColor};
+  color: ${(props) => props.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
+  border: 1px solid white;
   a {
     display: flex;
     align-items: center;
@@ -66,7 +67,11 @@ interface ICoin {
   type: string;
 }
 
-function Coins() {
+interface ICoinProps {
+  toggleDark: () => void;
+}
+
+function Coins({ toggleDark }: ICoinProps) {
   //this hook requires two arguments, (["unique identityfiyer for query"], fetch function)
   // isLoading is included in the hook
   // fetchCoins function is done, save it to the data.
@@ -90,6 +95,7 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>Coins</Title>
+        <button onClick={toggleDark}>Toggle Mode</button>
       </Header>
 
       {isLoading ? (
