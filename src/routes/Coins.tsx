@@ -2,16 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { isDarkAtom } from "../atoms";
+import Button from "../Button";
 
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
 `;
+
+const DarkToggle = styled(Button)`
+  position: fixed;
+  top: 10px;
+  right: 30em;
+`;
+
 const Header = styled.header`
   height: 10vh;
   display: flex;
@@ -72,7 +80,7 @@ interface ICoin {
 interface ICoinProps {}
 
 function Coins({}: ICoinProps) {
-  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
   const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   //this hook requires two arguments, (["unique identityfiyer for query"], fetch function)
   // isLoading is included in the hook
@@ -92,12 +100,14 @@ function Coins({}: ICoinProps) {
 
   return (
     <Container>
+      <DarkToggle onClick={toggleDarkAtom}>
+        {darkAtom ? "Light" : "Dark"}
+      </DarkToggle>
       <Helmet>
         <title>Coins</title>
       </Helmet>
       <Header>
         <Title>Coins</Title>
-        <button onClick={toggleDarkAtom}>Toggle Mode</button>
       </Header>
 
       {isLoading ? (

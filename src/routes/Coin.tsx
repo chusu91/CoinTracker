@@ -14,12 +14,20 @@ import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
+import Button from "../Button";
+import { useRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
   padding: 20px;
+`;
+const DarkToggle = styled(Button)`
+  position: fixed;
+  top: 10px;
+  right: 30em;
 `;
 const Header = styled.header`
   height: 10vh;
@@ -34,19 +42,6 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const Button = styled.button`
-  top: 20px;
-  right: 10em;
-  width: 50px;
-  height: 30px;
-  text-align: center;
-  font-weight: 500;
-  border-radius: 5px;
-  outline: none;
-  border: none;
-  color: ${(props) => props.theme.accentColor};
-  cursor: pointer;
-`;
 const Loader = styled.span`
   text-align: center;
   display: block;
@@ -55,7 +50,7 @@ const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -89,7 +84,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -171,6 +166,8 @@ interface PriceData {
 }
 
 function Coin({}: ICoinProps) {
+  const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   const { coinId } = useParams<{ coinId: string }>();
   const { state } = useLocation() as Location;
   const priceMatch = useMatch("/:coinId/price");
@@ -210,6 +207,9 @@ function Coin({}: ICoinProps) {
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
+      <DarkToggle onClick={toggleDarkAtom}>
+        {darkAtom ? "Light" : "Dark"}
+      </DarkToggle>
       <Helmet>
         <title>
           {state?.name ? state.name : loading ? "loading..." : infoData?.name}

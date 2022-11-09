@@ -5,10 +5,14 @@ export const darkTheme: DefaultTheme = {
   textColor: "white",
   accentColor: "#487eb0",
   cardBgColor: "transparent",
+  buttonBgColor: "#ecf0f1",
+  buttonColor: "#487eb0",
 };
 export const lightTheme: DefaultTheme = {
-  bgColor: "whitesmoke",
+  bgColor: "#ecf0f1",
   textColor: "black",
-  accentColor: "#487eb0",
+  accentColor: "#2980b9",
   cardBgColor: "white",
+  buttonBgColor: "#2980b9",
+  buttonColor: "#ecf0f1",
 };
